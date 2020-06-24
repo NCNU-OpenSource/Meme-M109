@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="imgData.js"></script>
+</head>
+
+<body style="background-color:pink">
+
+<div style="text-align: center; padding-top: 64px;">
+  <input id="text" type="text" value="" size="15" placeholder="輸入文字" style="font-size: 48px;">
+  <button onclick="generateImg()">出來吧</button>
+
+  <div>
+    <img id="img" src="https://i.imgur.com/f5cWWxT.png" style="max-height: 600px; max-width: 800px; padding-top: 32px;">
+  </div>
+</div>
+
+<script>
+function generateImg() {
+  // get input text
+  text = document.getElementById("text").value;
+  // then find the meme's path in imgData
+  path = imgData.get(text);
+  console.log(path);
+  // generate image in html
+  document.getElementById("img").src = path;
+}
+
+</script>
+
+</body>
+</html>

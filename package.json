@@ -1,0 +1,22 @@
+{
+  "name": "meme",
+  "version": "1.0.0",
+  "description": "generate meme img",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/chillmelon/ci-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/chillmelon/ci-demo/issues"
+  },
+  "homepage": "https://gitlab.com/chillmelon/ci-demo#readme",
+  "dependencies": {
+    "cucumber": "^6.0.5"
+  }
+}

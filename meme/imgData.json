@@ -1,0 +1,9 @@
+{
+    "data": [
+        {"name" : "王金平", "file" : "王金平.png"},
+        {"name" : "賴清德", "file" : "賴清德.jpg"},
+        {"name" : "習近平", "file" : "習近平.jpg"},
+        {"name" : "韓冰", "file" : "韓冰.jpg"},
+        {"name" : "馬英九", "file" : "馬英九.jpg"}
+    ]
+}

@@ -1,0 +1,64 @@
+stages:
+  - test
+  - build
+  - deploy
+#run npm test
+test:
+  stage: test
+  image: node:14.4.0-alpine3.10
+  script:
+    - npm install
+    - npm test
+
+#build and push to dockerhub
+docker-hub:
+  stage: build
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD $DOCKER_HUB_REGISTRY
+  script:
+    - docker build -t $DOCKER_HUB_REPO:$CI_COMMIT_SHORT_SHA .
+    - docker push $DOCKER_HUB_REPO:$CI_COMMIT_SHORT_SHA
+
+
+deploy-k8s:
+  stage: deploy
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - apk update && apk add curl
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl
+    - chmod u+x kubectl && mv kubectl /bin/kubectl
+    - export GOOGLE_APPLICATION_CREDENTIALS=$serviceAccountKey
+    - export KUBECONFIG=kubeconfig.yaml
+  script:
+    - touch deploy.yaml
+    - |
+      cat > deploy.yaml << EOF
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: boom
+        labels:
+          app: test
+      spec:
+        replicas: 3
+        selector:
+          matchLabels:
+            app: test
+        template:
+          metadata:
+            labels:
+              app: test
+          spec:
+            containers:
+            - name: test
+              image: $DOCKER_HUB_REPO:$CI_COMMIT_SHORT_SHA
+              ports:
+              - containerPort: 80
+      EOF
+    - kubectl apply -f deploy.yaml
+    - kubectl get ingress
